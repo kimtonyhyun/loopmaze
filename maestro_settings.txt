@@ -1,0 +1,107 @@
+<!--Pololu Maestro servo controller settings file, http://www.pololu.com/catalog/product/1350-->
+<UscSettings version="1">
+  <NeverSuspend>false</NeverSuspend>
+  <SerialMode>UART_FIXED_BAUD_RATE</SerialMode>
+  <FixedBaudRate>9600</FixedBaudRate>
+  <SerialTimeout>0</SerialTimeout>
+  <EnableCrc>false</EnableCrc>
+  <SerialDeviceNumber>12</SerialDeviceNumber>
+  <SerialMiniSscOffset>0</SerialMiniSscOffset>
+  <Channels MiniMaestroServoPeriod="80000" ServoMultiplier="1">
+    <!--Period = 20 ms-->
+    <!--Channel 0-->
+    <Channel name="Gate0" mode="Servo" min="2240" max="10112" homemode="Off" home="2240" speed="0" acceleration="0" neutral="2240" range="1905" />
+    <!--Channel 1-->
+    <Channel name="Gate1" mode="Servo" min="2240" max="10112" homemode="Off" home="2240" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <!--Channel 2-->
+    <Channel name="Gate2" mode="Servo" min="2240" max="10112" homemode="Off" home="2240" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <!--Channel 3-->
+    <Channel name="Gate3" mode="Servo" min="2240" max="10112" homemode="Off" home="2240" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <!--Channel 4-->
+    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <!--Channel 5-->
+    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <!--Channel 6-->
+    <Channel name="Gate0_Cmd" mode="Input" min="0" max="1024" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="1024" range="1905" />
+    <!--Channel 7-->
+    <Channel name="Gate1_Cmd" mode="Input" min="0" max="1024" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="1024" range="1905" />
+    <!--Channel 8-->
+    <Channel name="Gate2_Cmd" mode="Input" min="0" max="1024" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="1024" range="1905" />
+    <!--Channel 9-->
+    <Channel name="Gate3_Cmd" mode="Input" min="0" max="1024" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="1024" range="1905" />
+    <!--Channel 10-->
+    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <!--Channel 11-->
+    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <!--Channel 12-->
+    <Channel name="" mode="Output" min="3968" max="8000" homemode="Ignore" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <!--Channel 13-->
+    <Channel name="Prox_Clear" mode="Input" min="0" max="1024" homemode="Ignore" home="1024" speed="0" acceleration="0" neutral="1024" range="1905" />
+    <!--Channel 14-->
+    <Channel name="Prox1_Flag" mode="Output" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <!--Channel 15-->
+    <Channel name="Prox1" mode="Input" min="0" max="1024" homemode="Ignore" home="1024" speed="0" acceleration="0" neutral="1024" range="1905" />
+    <!--Channel 16-->
+    <Channel name="Prox0_Flag" mode="Output" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <!--Channel 17-->
+    <Channel name="Prox0" mode="Input" min="0" max="1024" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="1024" range="1905" />
+  </Channels>
+  <Sequences />
+  <Script ScriptDone="false">begin
+  # Process Clear_Prox
+  13 get_position 500 greater_than
+  if
+    0 16 servo # Prox0_Flag
+    0 14 servo # Prox1_Flag
+  endif
+
+  # Process Prox0
+  17 get_position 500 greater_than
+  if
+    8000 16 servo
+  endif
+
+  # Process Prox1
+  15 get_position 500 greater_than
+  if
+    8000 14 servo
+  endif
+
+  # Process Servo Gate0 (Ch0)
+  # Command input is Gate0_Cmd (Ch6)
+	  6 get_position 500 less_than
+  if
+    6800 0 servo
+  else
+    3000 0 servo
+  endif
+
+  # Process Servo Gate1 (Ch1)
+  # Command input is Gate1_Cmd (Ch7)
+	  7 get_position 500 less_than
+  if
+    6200 1 servo
+  else
+    2800 1 servo
+  endif	  
+
+  # Process Servo Gate2 (Ch2)
+  # Command input is Gate2_Cmd (Ch8)
+	  8 get_position 500 less_than
+  if
+    6000 2 servo
+  else
+    2500 2 servo
+  endif
+
+  # Process Servo Gate3 (Ch3)
+  # Command input is Gate3_Cmd (Ch9)
+	  9 get_position 500 less_than
+  if
+    6000 3 servo
+  else
+    2400 3 servo
+  endif
+
+repeat</Script>
+</UscSettings>
