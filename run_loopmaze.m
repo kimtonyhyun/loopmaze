@@ -12,23 +12,23 @@ maze.set_gates(track_idx, 0);
 maze.set_gates(unused_track_idx, 0);
 pause(1);
 
-fprintf('Running %d trials...\n', num_trials);
+fprintf('%s: BEGIN SESSION (%d trials)...\n', datestr(now), num_trials);
 for k = 1:num_trials
     % Setup trial
     trial_data = trial_list(k,:);
-    fprintf('%s: TRIAL %d (Context=%d, Choice=%d, Reward=%d)\n',...
+    fprintf('%s: Trial %d (Context=%d, Choice=%d, Reward=%d)\n',...
         datestr(now), k, trial_data(1), trial_data(2), trial_data(3));
     maze.set_context(track_idx, trial_data(1));
     maze.set_choice(track_idx, trial_data(2));
     
-    fprintf('%s: Delay start for %.1f seconds... ', datestr(now), trial_start_delay);
+    fprintf('%s:   Delay start for %.1f seconds... ', datestr(now), trial_start_delay);
     pause(trial_start_delay);
     fprintf('Done\n');
     
     maze.clear_prox;
     maze.set_gates(track_idx, 1); % Open gates
     
-    fprintf('%s: Waiting for mouse to complete run... ', datestr(now));
+    fprintf('%s:   Waiting for mouse to complete run... ', datestr(now));
     tic;
     while (true) % Wait for mouse to reach end
         if maze.check_end_prox(track_idx)
@@ -46,7 +46,7 @@ for k = 1:num_trials
     maze.clear_prox;
     maze.set_gates(unused_track_idx, 1);
     
-    fprintf('%s: Waiting for mouse to return to start... ', datestr(now));
+    fprintf('%s:   Waiting for mouse to return to start... ', datestr(now));
     tic;
     while (true) % Wait for mouse to reach beginning
         if maze.check_start_prox(track_idx)
@@ -57,3 +57,4 @@ for k = 1:num_trials
     fprintf('Done (%.1f sec)\n', t);
     maze.set_gates(unused_track_idx, 0);
 end
+fprintf('%s: END SESSION\n', datestr(now));
