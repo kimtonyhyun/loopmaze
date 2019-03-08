@@ -17,12 +17,14 @@ classdef LoopMaze < handle
             p.track(1).start_gate = 2;
             p.track(1).end_gate = 3;
             p.track(1).start_prox = 14;
+            p.track(1).end_prox = 15;
             
             p.track(2).context_step = 52; % Double check
             p.track(2).choice_step = 28; % Double check
             p.track(2).start_gate = 4;
             p.track(2).end_gate = 5;
-            p.track(2).start_prox = 15;
+            p.track(2).start_prox = 15; % Note: these are the same devices as track1
+            p.track(2).end_prox = 14;
             
             p.num_tracks = length(p.track);
 
@@ -59,10 +61,21 @@ classdef LoopMaze < handle
             %   than the mesh position (1)
             %------------------------------------------------------------
             maze.track_state = zeros(p.num_tracks, 2); % Dim2: [Context Choice]
+            
+            % Initialize apparatus
+            maze.clear_prox;
         end
         
-        function prox_tripped = check_prox(maze, track_idx)
+        % Prox sensor controls
+        %------------------------------------------------------------
+        function prox_tripped = check_start_prox(maze, track_idx)
             prox_pin = maze.params.track(track_idx).start_prox;
+            val = maze.a.digitalRead(prox_pin);
+            prox_tripped = (val == 1);
+        end
+        
+        function prox_tripped = check_end_prox(maze, track_idx)
+            prox_pin = maze.params.track(track_idx).end_prox;
             val = maze.a.digitalRead(prox_pin);
             prox_tripped = (val == 1);
         end
