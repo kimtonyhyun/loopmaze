@@ -2,7 +2,9 @@
 trial_list = [0 0 1;
               1 1 1;
               0 1 0;
-              1 0 0];
+              1 0 0;
+              1 1 1;
+              ];
 trial_start_delay = 3; % s
 
 num_trials = size(trial_list,1);
@@ -27,16 +29,27 @@ for k = 1:num_trials
     
     maze.clear_prox;
     maze.set_gates(track_idx, 1); % Open gates
-    
-    fprintf('%s:   Waiting for mouse to complete run... ', datestr(now));
+
+    fprintf('%s:   Waiting for mouse to complete run...\n', datestr(now));
+    lick_processed = 0;
     tic;
-    while (true) % Wait for mouse to reach end
+    while (true) % Wait for mouse to lick spout or reach end
+        if (~lick_processed && maze.is_licking(track_idx))
+            if trial_data(3) % Rewarded trial
+                maze.dose(track_idx);
+                fprintf('%s:   Detected _correct_ lick. Delivered reward.\n', datestr(now));
+            else % Unrewarded trial
+                fprintf('%s:   Detected _incorrect_ lick.\n', datestr(now));
+            end
+            lick_processed = 1;
+        end
+
         if maze.check_end_prox(track_idx)
             break;
         end
     end
     t = toc;
-    fprintf('Done (%.1f sec)\n', t);
+    fprintf('%s:   Run complete (%.1f sec)\n', datestr(now), t);
     
     maze.set_gates(track_idx, 0); % Close gates
     pause(0.5); %  Gate can collide with platforms during motion...

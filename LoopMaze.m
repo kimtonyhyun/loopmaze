@@ -14,6 +14,9 @@ classdef LoopMaze < handle
             %------------------------------------------------------------
             p.track(1).context_step = 29; % Dir is expected to be pin "step"-2
             p.track(1).choice_step = 53;
+            p.track(1).lick = 47;
+            p.track(1).dose = 49;
+            p.track(1).dose_duration = 27;
             p.track(1).start_gate = 2;
             p.track(1).end_gate = 3;
             p.track(1).start_prox = 14;
@@ -21,6 +24,9 @@ classdef LoopMaze < handle
             
             p.track(2).context_step = 52; % Double check
             p.track(2).choice_step = 28; % Double check
+            p.track(2).lick = 46; % Double check
+            p.track(2).dose = 48; % Double check
+            p.track(2).dose_duration = 50;
             p.track(2).start_gate = 4;
             p.track(2).end_gate = 5;
             p.track(2).start_prox = 15; % Note: these are the same devices as track1
@@ -47,9 +53,12 @@ classdef LoopMaze < handle
                 maze.a.pinMode(tr.context_step-2, 'output'); % dir
                 maze.a.pinMode(tr.choice_step, 'output');
                 maze.a.pinMode(tr.choice_step-2, 'output');
+                maze.a.pinMode(tr.lick, 'input');
+                maze.a.pinMode(tr.dose, 'output');
                 maze.a.pinMode(tr.start_gate, 'output');
                 maze.a.pinMode(tr.end_gate, 'output');
                 maze.a.pinMode(tr.start_prox, 'input');
+                maze.a.pinMode(tr.end_prox, 'input');
             end
             
             maze.a.pinMode(maze.params.sync.miniscope_trig, 'output');
@@ -64,6 +73,19 @@ classdef LoopMaze < handle
             
             % Initialize apparatus
             maze.clear_prox;
+        end
+        
+        % Reward controls
+        %------------------------------------------------------------
+        function dose(maze, track_idx)
+            dose_pin = maze.params.track(track_idx).dose;
+            dose_duration = maze.params.track(track_idx).dose_duration;
+            maze.a.send_pulse(dose_pin, dose_duration);
+        end
+        
+        function lick = is_licking(maze, track_idx)
+            lick_pin = maze.params.track(track_idx).lick;
+            lick = maze.a.digitalRead(lick_pin);
         end
         
         % Prox sensor controls
