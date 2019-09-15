@@ -18,11 +18,11 @@
     <!--Channel 3-->
     <Channel name="Gate3" mode="Servo" min="2240" max="10112" homemode="Off" home="2240" speed="0" acceleration="0" neutral="6000" range="1905" />
     <!--Channel 4-->
-    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <Channel name="Gate4" mode="Servo" min="2240" max="10112" homemode="Off" home="2240" speed="0" acceleration="0" neutral="6000" range="1905" />
     <!--Channel 5-->
-    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <Channel name="Gate5" mode="Servo" min="2240" max="10112" homemode="Off" home="2240" speed="0" acceleration="0" neutral="6000" range="1905" />
     <!--Channel 6-->
-    <Channel name="Gate0_Cmd" mode="Input" min="0" max="1024" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="1024" range="1905" />
+    <Channel name="Gate0_Cmd" mode="Input" min="0" max="1024" homemode="Ignore" home="1024" speed="0" acceleration="0" neutral="1024" range="1905" />
     <!--Channel 7-->
     <Channel name="Gate1_Cmd" mode="Input" min="0" max="1024" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="1024" range="1905" />
     <!--Channel 8-->
@@ -30,17 +30,17 @@
     <!--Channel 9-->
     <Channel name="Gate3_Cmd" mode="Input" min="0" max="1024" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="1024" range="1905" />
     <!--Channel 10-->
-    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <Channel name="Gate4_Cmd" mode="Input" min="0" max="1024" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="1024" range="1905" />
     <!--Channel 11-->
-    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <Channel name="Gate5_Cmd" mode="Input" min="0" max="1024" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="1024" range="1905" />
     <!--Channel 12-->
     <Channel name="" mode="Output" min="3968" max="8000" homemode="Ignore" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
     <!--Channel 13-->
-    <Channel name="Prox_Clear" mode="Input" min="0" max="1024" homemode="Ignore" home="1024" speed="0" acceleration="0" neutral="1024" range="1905" />
+    <Channel name="Prox_Clear" mode="Input" min="0" max="1024" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="1024" range="1905" />
     <!--Channel 14-->
     <Channel name="Prox1_Flag" mode="Output" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
     <!--Channel 15-->
-    <Channel name="Prox1" mode="Input" min="0" max="1024" homemode="Ignore" home="1024" speed="0" acceleration="0" neutral="1024" range="1905" />
+    <Channel name="Prox1" mode="Input" min="0" max="1024" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="1024" range="1905" />
     <!--Channel 16-->
     <Channel name="Prox0_Flag" mode="Output" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
     <!--Channel 17-->
@@ -101,6 +101,24 @@
     6000 3 servo
   else
     2400 3 servo
+  endif
+
+  # Process Servo Gate4 (Ch4)
+  # Command input is Gate4_Cmd (Ch10)
+	  10 get_position 500 less_than
+  if
+    6000 4 servo
+  else
+    2400 4 servo
+  endif
+
+  # Process Servo Gate5 (Ch5)
+  # Command input is Gate5_Cmd (Ch11)
+	  11 get_position 500 less_than
+  if
+    6000 5 servo
+  else
+    2400 5 servo
   endif
 
 repeat</Script>

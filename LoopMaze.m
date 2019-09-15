@@ -16,19 +16,21 @@ classdef LoopMaze < handle
             p.track(1).choice_step = 53;
             p.track(1).lick = 47;
             p.track(1).dose = 49;
-            p.track(1).dose_duration = 27;
+            p.track(1).dose_duration = 45;
             p.track(1).start_gate = 2;
             p.track(1).end_gate = 3;
+            p.track(1).mid_gate = 6;
             p.track(1).start_prox = 14;
             p.track(1).end_prox = 15;
             
-            p.track(2).context_step = 52; % Double check
-            p.track(2).choice_step = 28; % Double check
-            p.track(2).lick = 46; % Double check
-            p.track(2).dose = 48; % Double check
-            p.track(2).dose_duration = 50;
+            p.track(2).context_step = 52;
+            p.track(2).choice_step = 28;
+            p.track(2).lick = 22; % Double check
+            p.track(2).dose = 24; % Double check
+            p.track(2).dose_duration = 25;
             p.track(2).start_gate = 4;
             p.track(2).end_gate = 5;
+            p.track(2).mid_gate = 7;
             p.track(2).start_prox = 15; % Note: these are the same devices as track1
             p.track(2).end_prox = 14;
             
@@ -57,6 +59,7 @@ classdef LoopMaze < handle
                 maze.a.pinMode(tr.dose, 'output');
                 maze.a.pinMode(tr.start_gate, 'output');
                 maze.a.pinMode(tr.end_gate, 'output');
+                maze.a.pinMode(tr.mid_gate, 'output');
                 maze.a.pinMode(tr.start_prox, 'input');
                 maze.a.pinMode(tr.end_prox, 'input');
             end
@@ -183,6 +186,11 @@ classdef LoopMaze < handle
             else
                 maze.close_gates(track_idx);
             end
+        end
+        
+        function set_mid_gate(maze, track_idx, val)
+            tr = maze.params.track(track_idx);
+            maze.a.digitalWrite(tr.mid_gate, val);
         end
         
         % Synchronization
